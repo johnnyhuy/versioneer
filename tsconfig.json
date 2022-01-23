@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "moduleResolution": "node",
+    "target": "es6",
+    "module": "commonjs",
+    "lib": ["esnext"],
+    "strict": true,
+    "sourceMap": true,
+    "declaration": true,
+    "esModuleInterop": true
+  }
+}
