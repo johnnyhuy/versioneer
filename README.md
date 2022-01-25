@@ -1,15 +1,16 @@
 # Versioneer
 
-A standalone tool used to quickly version Git repos
+An opinionated standalone tool used to quickly version Git repos that wraps around [Conventional Changelog](https://github.com/conventional-changelog) projects.
 
-This project took inspiration from the standard-version project.
+The goal of this project is to make versioning a portable as possible.
+
+> It's also a learning experience for [me](https://github.com/johnnyhuy) ☺️
 
 ## 🏆 Features
 
 - Git tags
 - Follows the [Conventional commits](https://www.conventionalcommits.org/en/v1.0.0/) by default
 - GitHub release generation
-
 
 ## Getting Started
 
@@ -22,7 +23,7 @@ brew install versioneer
 ### Usage
 
 ```bash
-versioneer
+versioneer version
 ```
 
 ## Contributing
