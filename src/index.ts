@@ -1,14 +1,17 @@
-import { exit } from "process";
-import { getGitVersion } from "./lib/get-git-version";
+import { argv } from "process";
+import { getGitVersion } from "./lib/git";
+import { Command } from "commander";
 
-export async function main() {
-  try {
-    version = await getGitVersion(args.tagPrefix);
+const program = new Command();
 
-    const newVersion = await bump(args, version);
-    await commit(args, newVersion);
-    await tag(newVersion, pkg ? pkg.private : false, args);
-  } catch (error) {
-    exit(1);
-  }
+program.showHelpAfterError();
+
+async function main() {
+  await program.parseAsync(argv);
+  const options = program.opts();
+
+  const test = await getGitVersion();
+  console.debug(test);
 }
+
+main();
