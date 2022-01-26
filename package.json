@@ -36,7 +36,8 @@
     "conventional-github-releaser": "^3.1.5",
     "conventional-recommended-bump": "^6.1.0",
     "git-semver-tags": "^4.1.1",
-    "semver": "^7.3.5"
+    "semver": "^7.3.5",
+    "simple-git": "^3.1.0"
   },
   "devDependencies": {
     "@types/conventional-changelog-preset-loader": "^2.3.1",
