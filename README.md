@@ -44,3 +44,5 @@ Use the VSCode JavaScript Terminal to start debugging!
 - [ ] Homebrew
 - [ ] Chocolatey
 - [ ] Release templating
+- [ ] Docker image CLI
+- [ ] GitHub token to GitHub release

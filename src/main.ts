@@ -1,23 +1,26 @@
-import { argv } from "process";
-import { getCurrentGitVersion, tagVersion } from "./lib/git";
+import { argv } from 'process'
+import { getGitVersion, tagVersion } from "./lib/git";
 import { Command } from "commander";
 import { bumpVersion } from "./lib/version";
 import { githubRelease } from "./lib/github";
 
-const program = new Command();
-
-program.showHelpAfterError();
-
-export async function main() {
-  await program.parseAsync(argv);
+export async function main(args?: string[]) {
+  args = args || argv
+  const program = new Command();
+  program.option("version", "Version this working directory");
+  program.showHelpAfterError();
+  await program.parseAsync(args);
   const options = program.opts();
-  const currentVersion = await getCurrentGitVersion();
-  let proposedVersion = currentVersion;
 
-  if (currentVersion === '1.0.0') {
-    proposedVersion = await bumpVersion(currentVersion);
+  if (options.version) {
+    const currentVersion = await getGitVersion();
+    let proposedVersion = "1.0.0";
+
+    if (currentVersion !== "") {
+      proposedVersion = await bumpVersion(currentVersion);
+    }
+
+    await tagVersion(currentVersion);
+    // await githubRelease();
   }
-
-  await tagVersion(currentVersion);
-  // await githubRelease();
 }

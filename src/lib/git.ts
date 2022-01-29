@@ -4,25 +4,24 @@ import gitSemverTags from "git-semver-tags";
 import semver from "semver";
 import simpleGit from "simple-git";
 
-export function getCurrentGitVersion(): Promise<string> {
-  console.debug("Getting current Git version...");
+export function getGitVersion(): Promise<string> {
+  console.info("Getting Git version based Git tags on SemVer");
 
   return new Promise((resolve, reject) => {
     gitSemverTags({}, function (error, tags) {
-      console.debug(tags);
+      console.log(tags);
       if (error) return reject(error);
-      resolve(getCurrentTag(tags));
+      resolve(getCurrentGitTag(tags));
     });
   });
 }
 
-export function getCurrentTag(tags: string[]): string {
-  console.debug("Getting current tag...");
+export function getCurrentGitTag(tags: string[]): string {
+  console.info("Getting current tag");
 
   if (!tags.length) {
-    const defaultTag = "1.0.0";
-    console.debug(`No tags found, defaulting to ${defaultTag}`);
-    return defaultTag;
+    console.warn('No valid Git tags found, defaulting to nothing');
+    return '';
   }
 
   tags = tags.map((tag) => {
@@ -30,13 +29,13 @@ export function getCurrentTag(tags: string[]): string {
   });
   tags.sort(semver.rcompare);
 
-  console.debug(tags);
+  console.info(tags);
 
   return tags[0];
 }
 
 export async function tagVersion(version: string) {
-  console.debug(`Git tagging version ${version}...`);
+  console.info(`Git tagging version ${version}`);
   const git = simpleGit();
   git.addTag(version);
 }
