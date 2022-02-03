@@ -28,7 +28,7 @@ versioneer version
 
 ## Contributing
 
-Fork out and raise a pull request.
+Fork out and raise a pull request. We can use [VSCode dev containers](https://code.visualstudio.com/docs/remote/containers) to quickly spin up a NodeJS environment through [Docker](https://docs.docker.com/get-docker/).
 
 ```bash
 npm i
