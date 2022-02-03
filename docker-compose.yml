@@ -5,8 +5,8 @@ services:
     command: sleep infinity
     image: johnnyhuy/versioneer/devcontainer:dev
     volumes:
-      - ~/.ssh/:/home/vscode/.ssh:cached
-      - ~/.gnupg/:/home/vscode/.gnupg:cached
+      - ~/.ssh/:/home/node/.ssh:cached
+      - ~/.gnupg/:/home/node/.gnupg:cached
       - ./:/workspaces/versioneer:cached
     build:
       context: .
