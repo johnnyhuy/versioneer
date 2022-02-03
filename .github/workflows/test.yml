@@ -23,7 +23,6 @@ jobs:
     
     - name: Test
       run: |
-        docker compose pull
         docker compose build devcontainer
         docker compose run devcontainer npm ci
         docker compose run devcontainer npm test -
