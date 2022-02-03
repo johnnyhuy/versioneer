@@ -4,6 +4,7 @@ services:
   devcontainer:
     command: sleep infinity
     image: johnnyhuy/versioneer/devcontainer:dev
+    working_dir: /workspaces/versioneer
     volumes:
       - ~/.ssh/:/home/node/.ssh:cached
       - ~/.gnupg/:/home/node/.gnupg:cached
