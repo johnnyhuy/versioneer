@@ -12,3 +12,7 @@ services:
     build:
       context: .
       dockerfile: .devcontainer/Dockerfile
+    cap_add:
+      - SYS_PTRACE
+    security_opt:
+      - seccomp:unconfined
