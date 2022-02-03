@@ -2,7 +2,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "JavaScript Debug Terminal",
+            "name": "js-debug",
             "request": "launch",
             "type": "node-terminal",
             "skipFiles": [
@@ -15,7 +15,7 @@
         },
         {
             "type": "node",
-            "name": "Jest Tests",
+            "name": "vscode-jest-tests",
             "request": "launch",
             "console": "integratedTerminal",
             "internalConsoleOptions": "neverOpen",

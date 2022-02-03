@@ -6,21 +6,32 @@ import { githubRelease } from "./lib/github";
 
 export async function main(args?: string[]) {
   args = args || argv
+
   const program = new Command();
-  program.option("version", "Version this working directory");
   program.showHelpAfterError();
+
+  program.option('--dry-run, -D')
+    .description('Dry run to skip Git tagging and third-party releases')
+
+  program.command("version")
+    .description("Version this directory by default")
+    .action(async () => {
+      const options = program.opts();
+      const currentVersion = await getGitVersion();
+      let proposedVersion = "1.0.0";
+
+      if (currentVersion !== "") {
+        proposedVersion = await bumpVersion(currentVersion);
+      }
+
+      if (options.D) {
+        console.info('Dry run enabled, skipping Git tag and other third-party releases')
+        return;
+      }
+
+      await tagVersion(currentVersion);
+      // await githubRelease();
+    });
+
   await program.parseAsync(args);
-  const options = program.opts();
-
-  if (options.version) {
-    const currentVersion = await getGitVersion();
-    let proposedVersion = "1.0.0";
-
-    if (currentVersion !== "") {
-      proposedVersion = await bumpVersion(currentVersion);
-    }
-
-    await tagVersion(currentVersion);
-    // await githubRelease();
-  }
 }
