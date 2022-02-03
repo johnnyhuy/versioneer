@@ -1,8 +1,8 @@
 name: Run tests
 
 on:
-  pull_request:
-    branches: [ master ]
+  push:
+    branches: '*'
 
 jobs:
   test:
