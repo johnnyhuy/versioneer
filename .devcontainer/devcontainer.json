@@ -1,7 +1,8 @@
 {
 	"name": "Workspace",
-	"dockerComposeFile": "docker-compose.yml",
+	"dockerComposeFile": "../docker-compose.yml",
 	"service": "devcontainer",
+	"workspaceFolder": "/workspaces/versioneer",
 	"settings": {},
 	"extensions": [
 		"dbaeumer.vscode-eslint",

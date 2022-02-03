@@ -20,11 +20,10 @@ jobs:
         token: ${{ secrets.GITHUB_TOKEN }}
 
     - uses: actions/checkout@v2
-
-    - name: Build
+    
+    - name: Test
       run: |
         docker-compose pull
         docker-compose build devcontainer
-    
-    - name: Test
-      run: docker-compose run devcontainer npm test -
+        docker-compose run --rm devcontainer npm ci
+        docker-compose run --rm devcontainer npm test -
