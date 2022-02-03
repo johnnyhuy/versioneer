@@ -1,0 +1,10 @@
+version: "3.8"
+
+services:
+  devcontainer:
+    image: johnnyhuy/versioneer/devcontainer:dev
+    volumes:
+      - ./:/workspace:cached
+    build:
+      context: .
+      dockerfile: .devcontainer/Dockerfile

@@ -47,7 +47,7 @@ test("should bump version on existing version", async () => {
   });
 
   // Act
-  await main(args('version'));
+  await main(args(''));
 
   // Assert
   expect(getGitVersion).toBeCalled();
@@ -68,7 +68,7 @@ test("should not tag or release on dry run", async () => {
   jest.spyOn(process, 'exit').mockImplementation();
 
   // Act
-  await main(args('version', '--dry-run'));
+  await main(args('--dry-run'));
 
   // Assert
   expect(getGitVersion).toBeCalled();
