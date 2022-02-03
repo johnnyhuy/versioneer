@@ -25,4 +25,4 @@ jobs:
       run: |
         docker compose build devcontainer
         docker compose run -T --rm devcontainer npm ci
-        docker compose run -T --rm devcontainer npm test -
+        docker compose run -T --rm devcontainer npm test
