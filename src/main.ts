@@ -9,24 +9,28 @@ export async function main(args?: string[]) {
   const program = new Command();
   program.showHelpAfterError();
 
-  program.option('--dry-run, -D')
-    .description('Dry run to skip Git tagging and third-party releases')
+  program
+    .option('--dry-run, -D', 'Dry run to skip Git tagging and third-party releases')
+    .command('version')
+    .description('Version this directory')
+    .action(async () => {
+      const options = program.opts();
+      const currentVersion = await getGitVersion();
+      let proposedVersion = "1.0.0";
+
+      if (currentVersion !== "") {
+        proposedVersion = await bumpVersion(currentVersion);
+      }
+
+      if (options.D) {
+        console.info('Dry run enabled, skipping Git tag and other third-party releases')
+        return;
+      }
+
+      await tagVersion(currentVersion);
+    })
 
   await program.parseAsync(args);
 
-  const options = program.opts();
-  const currentVersion = await getGitVersion();
-  let proposedVersion = "1.0.0";
-
-  if (currentVersion !== "") {
-    proposedVersion = await bumpVersion(currentVersion);
-  }
-
-  if (options.D) {
-    console.info('Dry run enabled, skipping Git tag and other third-party releases')
-    return;
-  }
-
-  await tagVersion(currentVersion);
   // await githubRelease();
 }

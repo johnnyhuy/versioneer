@@ -13,6 +13,8 @@ function args(...args: string[]) {
 
 beforeEach(() => {
   jest.clearAllMocks()
+  jest.spyOn(console, 'info').mockImplementation(() => {});
+  jest.spyOn(console, 'warn').mockImplementation(() => {});
 });
 
 test("should not bump version on first version", async () => {
@@ -47,7 +49,7 @@ test("should bump version on existing version", async () => {
   });
 
   // Act
-  await main(args(''));
+  await main(args('version'));
 
   // Assert
   expect(getGitVersion).toBeCalled();
@@ -68,7 +70,7 @@ test("should not tag or release on dry run", async () => {
   jest.spyOn(process, 'exit').mockImplementation();
 
   // Act
-  await main(args('--dry-run'));
+  await main(args('version', '--dry-run'));
 
   // Assert
   expect(getGitVersion).toBeCalled();

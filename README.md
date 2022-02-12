@@ -4,7 +4,15 @@ An opinionated standalone tool used to quickly version Git repos that wraps arou
 
 The goal of this project is to make versioning a portable as possible.
 
-> It's also a learning experience for [me](https://github.com/johnnyhuy) ☺️
+## It's yet another release tool
+
+This is a learning experience to distribute a CLI package across different platforms.
+
+## Alternatives
+
+- [`release-it/release-it`](https://github.com/release-it/release-it#git)
+- [`semantic-release/semantic-release`](https://github.com/semantic-release/semantic-release)
+- [`conventional-changelog/standard-version`](https://github.com/conventional-changelog/standard-version)
 
 ## 🏆 Features
 
