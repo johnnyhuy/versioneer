@@ -1,13 +1,24 @@
-import { argv } from 'process'
+import { argv, stdin, stdout, cwd } from 'process'
 import { getGitVersion, tagVersion } from "./lib/git";
 import { Command } from "commander";
 import { bumpVersion } from "./lib/version";
+import { createInterface } from 'readline';
+import { info, log, Logger } from './lib/logger';
 
 export async function main(args?: string[]) {
   args = args || argv
 
   const program = new Command();
-  program.showHelpAfterError();
+  program
+    .name('versioneer')
+    .showHelpAfterError()
+    .option('--debug', 'Show debugging messages');
+
+  program.parse(args)
+  const options = program.opts();
+  if (options.debug) {
+    new Logger(true);
+  }
 
   program
     .option('--dry-run, -D', 'Dry run to skip Git tagging and third-party releases')
@@ -23,14 +34,22 @@ export async function main(args?: string[]) {
       }
 
       if (options.D) {
-        console.info('Dry run enabled, skipping Git tag and other third-party releases')
+        info('Dry run enabled, skipping Git tag and other third-party releases')
         return;
       }
 
-      await tagVersion(currentVersion);
+      log(`\nVersioning this directory:`)
+      info(cwd())
+      const rl = createInterface(stdin, stdout)
+
+      rl.question("\nConfirm? yes[y]/no[n]: ", async function (answer) {
+        if (answer.match(/[Yy](es)?/g)) {
+          await tagVersion(currentVersion);
+        }
+
+        rl.close()
+      })
     })
 
   await program.parseAsync(args);
-
-  // await githubRelease();
 }

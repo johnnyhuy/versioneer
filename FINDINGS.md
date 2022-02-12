@@ -79,3 +79,15 @@ test("example", async () => {
   expect(getCurrentGitVersion).toBeCalled();
 });
 ```
+
+## Wrestling with interactive CLI command tests
+
+There are opportunities where we'd want to run through confirmation prompts to test out user workflows. We can use the `mock-stdin` library to solve this problem.
+
+```ts
+// Run the command `versioneer version`
+await main(args('version'));
+
+// On the next tick type yes
+nextTick(() => stdin().send("yes"));
+```
