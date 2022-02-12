@@ -16,9 +16,7 @@ The goal of this project is to make versioning a portable as possible.
 
 ### Installation
 
-```bash
-brew install versioneer
-```
+> TODO
 
 ### Usage
 
@@ -36,13 +34,3 @@ npm i
 
 Use the VSCode JavaScript Terminal to start debugging!
 
-## Todo
-
-- [ ] Optional GitHub releases
-- [ ] GitHub Action
-- [ ] NPM
-- [ ] Homebrew
-- [ ] Chocolatey
-- [ ] Release templating
-- [ ] Docker image CLI
-- [ ] GitHub token to GitHub release

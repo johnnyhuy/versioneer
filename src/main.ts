@@ -2,7 +2,6 @@ import { argv } from 'process'
 import { getGitVersion, tagVersion } from "./lib/git";
 import { Command } from "commander";
 import { bumpVersion } from "./lib/version";
-import { githubRelease } from "./lib/github";
 
 export async function main(args?: string[]) {
   args = args || argv
