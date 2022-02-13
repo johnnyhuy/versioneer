@@ -1,5 +1,5 @@
-import { main } from "./main";
+import { main } from "./main"
 
 main().catch((error) => {
-  throw error;
-});
+  throw error
+})

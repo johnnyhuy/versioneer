@@ -1,96 +1,147 @@
-import { argv, nextTick } from 'process'
+import { argv } from 'process'
 import { MockedFunction } from 'ts-jest'
-import { getGitVersion, tagVersion } from "./lib/git";
-import { bumpVersion } from "./lib/version";
-import { main } from "./main";
-import { MockSTDIN, stdin } from "mock-stdin"
+import { deleteTags, getAllTags, getCurrentTag, tagVersion } from "./lib/git"
+import { bumpVersion } from "./lib/version"
+import { main } from "./main"
+import readline from "readline"
 
-jest.mock("./lib/git");
-jest.mock("./lib/version");
+jest.mock("./lib/git")
+jest.mock("./lib/version")
+jest.mock("./lib/logger")
+jest.mock('readline', () => ({
+  createInterface: jest.fn().mockReturnValue({
+    question: jest.fn().mockImplementation((question, callback) => callback("y")),
+    close: jest.fn().mockImplementation()
+  })
+}))
 
 function args(...args: string[]) {
   return [...argv.slice(0, 1), 'versioneer', ...args]
 }
 
-let stdinMock: MockSTDIN;
-
 beforeEach(() => {
-  stdinMock = stdin();
   jest.clearAllMocks()
-  jest.spyOn(console, 'info').mockImplementation();
-  jest.spyOn(console, 'warn').mockImplementation();
-  jest.spyOn(process, 'exit').mockImplementation();
-});
+  jest.spyOn(process, 'exit').mockImplementation()
+})
+
+test("should purge versions", async () => {
+  // Arrange
+  const getAllTagsMock = getAllTags as MockedFunction<
+    typeof getAllTags
+  >
+  getAllTagsMock.mockImplementation(() => {
+    return new Promise<string[]>((resolve, reject) => {
+      resolve(["1.0.0", "10.0.0"]);
+    });
+  })
+  const deleteTagsMock = deleteTags as MockedFunction<
+    typeof deleteTags
+  >
+  deleteTagsMock.mockImplementation()
+
+  // Act
+  await main(args('purge'))
+
+  // Assert
+  expect(deleteTags).toBeCalled()
+})
+
+test("should not purge on no versions", async () => {
+  // Arrange
+  const getAllTagsMock = getAllTags as MockedFunction<
+    typeof getAllTags
+  >
+  getAllTagsMock.mockImplementation(() => {
+    return new Promise<string[]>((resolve, reject) => {
+      resolve([]);
+    });
+  })
+  const deleteTagsMock = deleteTags as MockedFunction<
+    typeof deleteTags
+  >
+  deleteTagsMock.mockImplementation()
+
+  // Act
+  await main(args('purge'))
+
+  // Assert
+  expect(deleteTags).not.toBeCalled()
+})
 
 test("should not bump version on first version", async () => {
   // Arrange
-  const getGitVersionMock = getGitVersion as MockedFunction<
-    typeof getGitVersion
-  >;
-  getGitVersionMock.mockImplementation(() => {
-    return new Promise<string>((resolve, reject) => {
-      resolve("");
-    });
-  });
+  const getCurrentTagMock = getCurrentTag as MockedFunction<
+    typeof getCurrentTag
+  >
+  getCurrentTagMock.mockImplementation(() => {
+    return ""
+  })
 
   // Act
-  await main(args('version'));
-  stdinMock.send("yes\r")
+  await main(args('apply'))
 
   // Assert
-  expect(getGitVersion).toBeCalled();
-  expect(tagVersion).toBeCalled();
-  expect(bumpVersion).not.toBeCalled();
-});
+  expect(getCurrentTag).toBeCalled()
+  expect(tagVersion).toBeCalled()
+  expect(bumpVersion).not.toBeCalled()
+})
 
 test("should bump version on existing version", async () => {
   // Arrange
-  const getGitVersionMock = getGitVersion as MockedFunction<
-    typeof getGitVersion
-  >;
-  getGitVersionMock.mockImplementation(() => {
-    return new Promise<string>((resolve, reject) => {
-      resolve("1.0.0");
-    });
-  });
+  const getCurrentTagMock = getCurrentTag as MockedFunction<
+    typeof getCurrentTag
+  >
+  getCurrentTagMock.mockImplementation(() => {
+    return "1.0.0"
+  })
 
   // Act
-  await main(args('version'));
-  stdinMock.send("yes\r")
+  await main(args('apply'))
 
   // Assert
-  expect(getGitVersion).toBeCalled();
-  expect(tagVersion).toBeCalled();
-  expect(bumpVersion).toBeCalled();
-});
+  expect(getCurrentTag).toBeCalled()
+  expect(tagVersion).toBeCalled()
+  expect(bumpVersion).toBeCalled()
+})
 
 test("should not tag or release on dry run", async () => {
-  // Arrange
-  const getGitVersionMock = getGitVersion as MockedFunction<
-    typeof getGitVersion
-  >;
-  getGitVersionMock.mockImplementation(() => {
-    return new Promise<string>((resolve, reject) => {
-      resolve("1.0.0");
-    });
-  });
-
   // Act
-  await main(args('version', '--dry-run'));
+  await main(args('apply', '--dry-run'))
 
   // Assert
-  expect(getGitVersion).toBeCalled();
-  expect(tagVersion).not.toBeCalled();
-  expect(bumpVersion).toBeCalled();
-});
+  expect(getCurrentTag).toBeCalled()
+  expect(tagVersion).not.toBeCalled()
+  expect(bumpVersion).toBeCalled()
+})
+
+test("should not confirm on force", async () => {
+  // Arrange
+  const question = jest.fn().mockImplementation()
+  readline.createInterface = jest.fn().mockReturnValue({
+    question: question,
+    close: jest.fn().mockImplementation()
+  })
+
+  // Act
+  await main(args('apply', '--force'))
+
+  // Assert
+  expect(question).not.toBeCalled()
+  expect(getCurrentTag).toBeCalled()
+  expect(tagVersion).toBeCalled()
+  expect(bumpVersion).toBeCalled()
+})
 
 test("should cancel version on confirmation", async () => {
   // Act
-  await main(args('version', '--dry-run'));
-  stdinMock.send("nah\r")
+  readline.createInterface = jest.fn().mockReturnValue({
+    question: jest.fn().mockImplementation((question, callback) => callback("n")),
+    close: jest.fn().mockImplementation()
+  })
+  await main(args('apply'))
 
   // Assert
-  expect(getGitVersion).toBeCalled();
-  expect(tagVersion).not.toBeCalled();
-  expect(bumpVersion).toBeCalled();
-});
+  expect(getCurrentTag).toBeCalled()
+  expect(tagVersion).not.toBeCalled()
+  expect(bumpVersion).toBeCalled()
+})
