@@ -11,7 +11,6 @@ export async function main(args?: string[]) {
 
   const program = new Command()
   program
-    .name('versioneer')
     .showHelpAfterError()
 
   program
