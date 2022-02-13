@@ -6,6 +6,7 @@ export function askConfirmation(skip: boolean = false, callback: () => {}): Prom
     callback()
     return
   }
+
   const rl = createInterface(stdin, stdout)
 
   rl.question("\n💬 Confirm? yes[y]/no[n]: ", function (answer) {

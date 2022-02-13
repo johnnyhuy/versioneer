@@ -33,7 +33,6 @@ export async function main(args?: string[]) {
       let proposedVersion = "1.0.0"
       const dryRun = this.opts().D
       const force = this.opts().F
-      const init = this.opts().init
 
       if (currentVersion !== "") {
         proposedVersion = await bumpVersion(currentVersion)
@@ -46,7 +45,7 @@ export async function main(args?: string[]) {
       log(`\n✅ Versioning this directory...`)
       info(`${cwd()}\n`)
 
-      log(`🥾 ${init ? 'Init' : 'Bumping'} version...`)
+      log(`🥾 Bumping version...`)
       info(`${currentVersion !== '' ? currentVersion : 'none'} -> ${proposedVersion}`)
 
       if (dryRun) {
