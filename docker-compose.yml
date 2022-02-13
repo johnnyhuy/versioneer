@@ -22,3 +22,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    volumes:
+      - ~/.ssh/:/home/node/.ssh:cached
+      - ~/.gnupg/:/home/node/.gnupg:cached
+      - ./:/workspaces/versioneer:cached
