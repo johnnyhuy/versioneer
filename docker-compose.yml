@@ -16,3 +16,9 @@ services:
       - SYS_PTRACE
     security_opt:
       - seccomp:unconfined
+
+  versioneer:
+    image: johnnyhuy/versioneer:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: Dockerfile

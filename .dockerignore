@@ -1,0 +1,10 @@
+node_modules
+bin
+dist
+.git
+.gitignore
+.editorconfig
+.prettierrc
+LICENSE
+*.md
+**/*/*.test
