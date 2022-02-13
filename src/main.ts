@@ -2,7 +2,6 @@ import { argv, stdin, stdout, cwd, on, exit } from 'process'
 import { deleteTags, getAllTags, getCurrentTag, tagVersion } from "./lib/git"
 import { Command } from "commander"
 import { bumpVersion } from "./lib/version"
-import { createInterface } from 'readline'
 import { debug, info, log, Logger, warn } from './lib/logger'
 import { askConfirmation } from './lib/readline'
 
@@ -59,6 +58,15 @@ export async function main(args?: string[]) {
           await tagVersion(proposedVersion)
         })
       }
+    })
+
+  program
+    .command('release')
+    .description('Release version to third-party ecosystems')
+    .option('--dry-run, -D', 'Show a plan of changes')
+    .option('--force -F', 'Run the command without confirmation')
+    .action(async function () {
+      // TODO
     })
 
   program
