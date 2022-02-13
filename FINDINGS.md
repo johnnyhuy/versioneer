@@ -82,12 +82,26 @@ test("example", async () => {
 
 ## Wrestling with interactive CLI command tests
 
-There are opportunities where we'd want to run through confirmation prompts to test out user workflows. We can use the `mock-stdin` library to solve this problem.
+There are opportunities where we'd want to run through confirmation prompts to test out user workflows.
 
 ```ts
-// Run the command `versioneer version`
-await main(args('version'))
+import readline from "readline"
 
-// On the next tick type yes
-nextTick(() => stdin().send("yes"))
+jest.mock('readline', () => ({
+  createInterface: jest.fn().mockReturnValue({
+    question: jest.fn().mockImplementation((question, callback) => callback("y")),
+    close: jest.fn().mockImplementation()
+  })
+}))
+
+test("example", async () => {
+  // Arrange
+  const question = jest.fn().mockImplementation()
+  readline.createInterface = jest.fn().mockReturnValue({
+    question: question,
+    close: jest.fn().mockImplementation()
+  })
+
+  // Act
+})
 ```
