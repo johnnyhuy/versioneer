@@ -25,7 +25,6 @@ export async function main(args?: string[]) {
   program
     .command('apply')
     .description('Version this directory')
-    .option('--init', 'Initial version, do not bump')
     .option('--push', 'Push changes to Git remote')
     .option('--dry-run, -D', 'Show a plan of changes')
     .option('--force -F', 'Run the command without confirmation')
@@ -37,11 +36,6 @@ export async function main(args?: string[]) {
       const init = this.opts().init
 
       if (currentVersion !== "") {
-        if (init) {
-          error(`Cannot init version this directory, version ${currentVersion} already exists`)
-          return
-        }
-          
         proposedVersion = await bumpVersion(currentVersion)
       }
 
