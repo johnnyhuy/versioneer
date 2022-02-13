@@ -2,7 +2,7 @@ import { argv, cwd } from 'process'
 import { deleteTags, getAllTags, getCurrentTag, tagGit, tagNodePackage } from "./lib/git"
 import { Command } from "commander"
 import { bumpVersion } from "./lib/version"
-import { debug, info, log, Logger, warn } from './lib/logger'
+import { debug, error, info, log, Logger, warn } from './lib/logger'
 import { askConfirmation } from './lib/readline'
 
 export async function main(args?: string[]) {
@@ -25,6 +25,7 @@ export async function main(args?: string[]) {
   program
     .command('apply')
     .description('Version this directory')
+    .option('--init', 'Initial version, do not bump')
     .option('--dry-run, -D', 'Show a plan of changes')
     .option('--force -F', 'Run the command without confirmation')
     .action(async function () {
@@ -32,8 +33,14 @@ export async function main(args?: string[]) {
       let proposedVersion = "1.0.0"
       const dryRun = this.opts().D
       const force = this.opts().F
+      const init = this.opts().init
 
       if (currentVersion !== "") {
+        if (init) {
+          error(`Cannot init version this directory, version ${currentVersion} already exists`)
+          return
+        }
+          
         proposedVersion = await bumpVersion(currentVersion)
       }
 
@@ -44,7 +51,7 @@ export async function main(args?: string[]) {
       log(`\n✅ Versioning this directory...`)
       info(`${cwd()}\n`)
 
-      log(`🥾 Bumping version...`)
+      log(`🥾 ${init ? 'Init' : 'Bumping'} version...`)
       info(`${currentVersion !== '' ? currentVersion : 'none'} -> ${proposedVersion}`)
 
       if (dryRun) {

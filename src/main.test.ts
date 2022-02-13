@@ -105,6 +105,44 @@ test("should bump version on existing version", async () => {
   expect(bumpVersion).toBeCalled()
 })
 
+test("should bump version on init", async () => {
+  // Arrange
+  const getCurrentTagMock = getCurrentTag as MockedFunction<
+    typeof getCurrentTag
+  >
+  getCurrentTagMock.mockImplementation(() => {
+    return ""
+  })
+
+  // Act
+  await main(args('apply', '--init'))
+
+  // Assert
+  expect(getCurrentTag).toBeCalled()
+  expect(tagNodePackage).toBeCalled()
+  expect(tagGit).toBeCalled()
+  expect(bumpVersion).not.toBeCalled()
+})
+
+test("should not run init if there are tags", async () => {
+  // Arrange
+  const getCurrentTagMock = getCurrentTag as MockedFunction<
+    typeof getCurrentTag
+  >
+  getCurrentTagMock.mockImplementation(() => {
+    return "1.0.0"
+  })
+
+  // Act
+  await main(args('apply', '--init'))
+
+  // Assert
+  expect(getCurrentTag).toBeCalled()
+  expect(tagNodePackage).not.toBeCalled()
+  expect(tagGit).not.toBeCalled()
+  expect(bumpVersion).not.toBeCalled()
+})
+
 test("should not tag or release on dry run", async () => {
   // Act
   await main(args('apply', '--dry-run'))
