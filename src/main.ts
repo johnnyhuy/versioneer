@@ -26,6 +26,7 @@ export async function main(args?: string[]) {
     .command('apply')
     .description('Version this directory')
     .option('--init', 'Initial version, do not bump')
+    .option('--push', 'Push changes to Git remote')
     .option('--dry-run, -D', 'Show a plan of changes')
     .option('--force -F', 'Run the command without confirmation')
     .action(async function () {
@@ -65,8 +66,19 @@ export async function main(args?: string[]) {
     })
 
   program
+    .command('rollback')
+    .description('Rollback to the last known SemVer tag')
+    .option('--push', 'Push changes to Git remote')
+    .option('--dry-run, -D', 'Show a plan of changes')
+    .option('--force -F', 'Run the command without confirmation')
+    .action(async function () {
+      info('Work in progress!')
+    })
+
+  program
     .command('purge')
     .description('Purge all versions from this directory')
+    .option('--push', 'Push changes to Git remote')
     .option('--dry-run, -D', 'Show a plan of changes')
     .option('--force -F', 'Run the command without confirmation')
     .action(async function () {

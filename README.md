@@ -79,20 +79,23 @@ Commands:
 1. Asks to bump the current directory Git tag
 2. Detects a `package.json` and bump the version
 3. Bumps local Git tag
-4. Pushes new tag to remote
+
+(Optional) Use the `--push` option to sync changes to the remote.
 
 ### `versioneer rollback`
 
 1. Asks to rollback the latest version in the current directory
 2. Deletes latest local Git tag
-3. Deletes latest remote Git tag
 4. Hard Git reset to last known SerVer Git tag
+
+(Optional) Use the `--push` option to sync changes to the remote.
 
 ### `versioneer purge`
 
 1. Asks to delete all SemVer Git tags in the current directory
 2. Deletes all local tags
-3. Deletes all remote tags
+
+(Optional) Use the `--push` option to sync changes to the remote.
 
 ## 📜 Configuration
 
