@@ -67,7 +67,7 @@ export async function main(args?: string[]) {
 
   program
     .command('rollback')
-    .description('Rollback to the last known SemVer tag')
+    .description('Rollback to the last known SemVer tag from this directory')
     .option('--push', 'Push changes to Git remote')
     .option('--dry-run, -D', 'Show a plan of changes')
     .option('--force -F', 'Run the command without confirmation')

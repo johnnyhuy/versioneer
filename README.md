@@ -82,7 +82,7 @@ Commands:
 
 (Optional) Use the `--push` option to sync changes to the remote.
 
-### `versioneer rollback`
+### `versioneer rollback` - WIP
 
 1. Asks to rollback the latest version in the current directory
 2. Deletes latest local Git tag
