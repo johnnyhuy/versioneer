@@ -1,0 +1,7 @@
+node_modules
+bin
+.git
+.gitignore
+.editorconfig
+.prettierrc
+FINDINGS.md
