@@ -7,7 +7,7 @@
   "scripts": {
     "build": "tsc --outDir dist",
     "lint": "tsc --noEmit && eslint \"**/*.{js,ts}\" --quiet --fix",
-    "package": "npm run build && pkg .",
+    "package": "npm run build && pkg --compress GZip .",
     "start": "ts-node src/versioneer.ts",
     "test": "jest",
     "watch": "tsc -w --outDir dist"
@@ -17,8 +17,14 @@
     "url": "git+https://github.com/johnnyhuy/versioner.git"
   },
   "pkg": {
-    "targets": [ "node16-linux-x64", "node16-macos-x64", "node16-macos-arm64", "node16-win-x64" ],
-    "outputPath": "bin"
+    "targets": [
+      "node16-linux-x64",
+      "node16-macos-x64",
+      "node16-macos-arm64",
+      "node16-win-x64"
+    ],
+    "outputPath": "bin",
+    "compress": "GZip"
   },
   "keywords": [
     "git",

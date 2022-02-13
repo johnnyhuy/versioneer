@@ -1,6 +1,6 @@
 import { argv } from 'process'
 import { MockedFunction } from 'ts-jest'
-import { deleteTags, getAllTags, getCurrentTag, tagVersion } from "./lib/git"
+import { deleteTags, getAllTags, getCurrentTag, tagGit, tagNodePackage } from "./lib/git"
 import { bumpVersion } from "./lib/version"
 import { main } from "./main"
 import readline from "readline"
@@ -82,7 +82,7 @@ test("should not bump version on first version", async () => {
 
   // Assert
   expect(getCurrentTag).toBeCalled()
-  expect(tagVersion).toBeCalled()
+  expect(tagGit).toBeCalled()
   expect(bumpVersion).not.toBeCalled()
 })
 
@@ -100,7 +100,8 @@ test("should bump version on existing version", async () => {
 
   // Assert
   expect(getCurrentTag).toBeCalled()
-  expect(tagVersion).toBeCalled()
+  expect(tagNodePackage).toBeCalled()
+  expect(tagGit).toBeCalled()
   expect(bumpVersion).toBeCalled()
 })
 
@@ -110,7 +111,7 @@ test("should not tag or release on dry run", async () => {
 
   // Assert
   expect(getCurrentTag).toBeCalled()
-  expect(tagVersion).not.toBeCalled()
+  expect(tagGit).not.toBeCalled()
   expect(bumpVersion).toBeCalled()
 })
 
@@ -128,7 +129,8 @@ test("should not confirm on force", async () => {
   // Assert
   expect(question).not.toBeCalled()
   expect(getCurrentTag).toBeCalled()
-  expect(tagVersion).toBeCalled()
+  expect(tagNodePackage).toBeCalled()
+  expect(tagGit).toBeCalled()
   expect(bumpVersion).toBeCalled()
 })
 
@@ -142,6 +144,6 @@ test("should cancel version on confirmation", async () => {
 
   // Assert
   expect(getCurrentTag).toBeCalled()
-  expect(tagVersion).not.toBeCalled()
+  expect(tagGit).not.toBeCalled()
   expect(bumpVersion).toBeCalled()
 })

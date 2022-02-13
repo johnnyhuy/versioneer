@@ -7,7 +7,6 @@ beforeEach(() => {
   jest.spyOn(console, 'warn').mockImplementation(() => {})
 })
 
-
 test("should return empty string on no tags", () => {
   // Arrange
   const tags: string[] = []

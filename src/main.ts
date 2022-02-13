@@ -1,5 +1,5 @@
-import { argv, stdin, stdout, cwd, on, exit } from 'process'
-import { deleteTags, getAllTags, getCurrentTag, tagVersion } from "./lib/git"
+import { argv, cwd } from 'process'
+import { deleteTags, getAllTags, getCurrentTag, tagGit, tagNodePackage } from "./lib/git"
 import { Command } from "commander"
 import { bumpVersion } from "./lib/version"
 import { debug, info, log, Logger, warn } from './lib/logger'
@@ -51,22 +51,10 @@ export async function main(args?: string[]) {
         return
       }
 
-      if (force) {
-        await tagVersion(proposedVersion)
-      } else {
-        askConfirmation(async () => {
-          await tagVersion(proposedVersion)
-        })
-      }
-    })
-
-  program
-    .command('release')
-    .description('Release version to third-party ecosystems')
-    .option('--dry-run, -D', 'Show a plan of changes')
-    .option('--force -F', 'Run the command without confirmation')
-    .action(async function () {
-      // TODO
+      askConfirmation(force, async () => {
+        await tagNodePackage(proposedVersion)
+        await tagGit(proposedVersion)
+      })
     })
 
   program
@@ -98,13 +86,9 @@ export async function main(args?: string[]) {
         return
       }
 
-      if (force) {
+      askConfirmation(force, async () => {
         await deleteTags(versions)
-      } else {
-        askConfirmation(async () => {
-          await deleteTags(versions)
-        })
-      }
+      })
     })
 
   await program.parseAsync(args)
