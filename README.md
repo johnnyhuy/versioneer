@@ -18,18 +18,54 @@ This tool may not suit your project. However, there are plenty of more mature op
 
 ## 🏆 Features
 
-- Git tags
-- Follows the [Conventional commits](https://www.conventionalcommits.org/en/v1.0.0/) by default
+- Bumps Git tags based on [Conventional commits](https://www.conventionalcommits.org/en/v1.0.0/)
+- Version rollback
+- Commits version bumps to `package.json`
 - GitHub release generation
+- Purges all tags
+- Multi-platform - MacOS x64 & ARM, Windows x64, Linux x64, Docker
 
-## Getting Started
+## 🐈 Default behaviour
+
+### `versioneer apply`
+
+1. Asks to bump the current directory Git tag
+
+### `versioneer purge`
+
+1. Asks to delete all SemVer Git tags in the current directory
+
+## 🚀 Getting Started
+
+
+### Prerequisites
+
+- [Git](https://git-scm.com/)
 
 ### Installation
 
 #### Homebrew
 
 ```bash
-brew install 
+brew install johnnyhuy/homebrew-repo/versioneer
+```
+
+#### Linux
+
+```bash
+curl -L https://github.com/johnnyhuy/versioneer/releases/download/v1.0.0/versioneer-linux-x64.tar.gz -O - | tar -xf /usr/local/bin/versioneer
+```
+
+#### Windows
+
+```bash
+choco install -y versioneer
+```
+
+#### Docker
+
+```bash
+docker run -v $PWD:/opt/workspace --rm johnnyhuy/versioneer
 ```
 
 ### Usage
@@ -47,7 +83,7 @@ Commands:
   help [command]   display help for command
 ```
 
-## Contributing
+## ✍️ Contributing
 
 Any feedback is welcome! Fork out and raise a pull request.
 
