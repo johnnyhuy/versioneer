@@ -1,0 +1,12 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: versioneer
+  title: Versioneer
+  description: A tool for managing project versions in Python
+  tags:
+    - python
+spec:
+  type: library
+  lifecycle: experimental
+  owner: johnnyhuy
